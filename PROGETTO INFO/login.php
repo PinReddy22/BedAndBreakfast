@@ -1,3 +1,4 @@
+
 <?php
 require_once('config.php')
 ?>
@@ -42,6 +43,12 @@ require_once('config.php')
         </div>
     </div>
 </div>
+<?php
+if (isset($_GET['error']) && $_GET['error'] === "invalid_credentials") {
+    // Visualizza un alert con un messaggio di errore
+    echo "<script>alert('Email o Password sbagliati. Riprova.');</script>";
+}
 
+?>
 </body>
 </html>
