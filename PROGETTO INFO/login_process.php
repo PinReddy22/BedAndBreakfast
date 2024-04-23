@@ -6,24 +6,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = ($_POST['password']);
 
     // Query per recuperare l'utente con l'email fornita
-    echo $email." ".$password;
-    $sql = "SELECT * FROM clienti WHERE mail = ? AND password=? LIMIT 1";
+    $sql = "SELECT mail,password FROM `clienti` WHERE mail=? and password=? LIMIT 1";
     $insert = $db->prepare($sql);
-    $risultato=$insert->execute([$email,$password]);
-    if($risultato){
-        $utente = $insert->fetch();
+    $insert->bind_param("ss",$email,$password);
+    $insert->execute();
+    $risultato = $insert->get_result();
+    if($risultato->num_rows >0){
+        $utente= array($risultato->fetch_assoc());
         echo "sono in risultato";
-        echo $risultato;
         echo "stop risultato";
         print_r($utente); // Stampare eventuali risultati della query per debug
-        if($insert->num_rows > 0){
+        
             echo "sono in insert  ";
             header("Location: index.php");
             exit();
+        
         } else {
             // Credenziali non valide
-            $error_message = "Credenziali non valide";
-        }
+            header("Location: login.php?error=invalid_credentials");
+            exit();
     }
     }
 
