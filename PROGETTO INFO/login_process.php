@@ -1,5 +1,6 @@
 <?php
 require_once('config.php');
+session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera l'email e la password inviate dal form di login
     $email = $_POST['email'];
