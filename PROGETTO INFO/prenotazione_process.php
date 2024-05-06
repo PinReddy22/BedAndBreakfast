@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Se esiste già una prenotazione sovrapposta, reindirizza alla pagina index.php con un messaggio di errore
     if ($result_overlap->num_rows > 0) {
-        header("Location: index.php?error=La+camera+è+già+occupata+per+le+date+specificate.+Si+prega+di+selezionare+un'altra+camera+o+modificare+le+date.");
+        header("Location: index.php?error=La+camera+è+già+occupata+per+le+date+specificate.");
         exit();
     } else {
         // Altrimenti, aggiungi la nuova prenotazione al database
