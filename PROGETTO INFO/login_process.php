@@ -1,4 +1,5 @@
 <?php
+
 require_once('config.php');
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = ($_POST['password']);
 
     // Query per recuperare l'utente con l'email fornita
-    $sql = "SELECT mail,password FROM `clienti` WHERE mail=? and password=? LIMIT 1";
+    $sql = "SELECT idCliente,mail,password FROM `clienti` WHERE mail=? and password=? LIMIT 1";
     $insert = $db->prepare($sql);
     $insert->bind_param("ss",$email,$password);
     $insert->execute();
@@ -17,8 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "sono in risultato";
         echo "stop risultato";
         print_r($utente); // Stampare eventuali risultati della query per debug
-        
+        $id = $utente[0]['idCliente'];
             echo "sono in insert  ";
+            session_start();
+            $_SESSION['idCliente'] = $id;
             header("Location: index.php");
             exit();
         
