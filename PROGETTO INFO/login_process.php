@@ -3,9 +3,9 @@
 require_once('config.php');
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recupera l'email e la password inviate dal form di login
-    $email = $_POST['email'];
-    $password = ($_POST['password']);
+    // Recupera i dati
+    $camera =
+
 
     // Query per recuperare l'utente con l'email fornita
     $sql = "SELECT idCliente,mail,password FROM `clienti` WHERE mail=? and password=? LIMIT 1";

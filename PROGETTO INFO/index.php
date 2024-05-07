@@ -19,7 +19,7 @@
 </header>
 
 <div class="flex-grow relative flex flex-col items-center justify-center overflow-hidden">
-    <h1 class="absolute top-0 text-3xl font-semibold text-center text-gray-700 w-full">Bed and Breakfast</h1>
+    <h1 class="absolute top-0 text-3xl font-semibold text-center text-gray-700 w-full">Prenota la tua Camera</h1>
     <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg">
         <!-- Aggiunta della sezione per visualizzare l'esito della prenotazione -->
         <?php
@@ -96,7 +96,7 @@
     // Nasconde l'alert dopo 5 secondi
     setTimeout(() => {
         document.getElementById('alertMessage').style.display = 'none';
-    }, 5000);
+    }, 4000);
 </script>
 </body>
 </html>

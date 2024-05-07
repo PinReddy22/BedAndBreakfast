@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idCliente = $_SESSION['idCliente'];
 
     // Query per verificare se ci sono prenotazioni sovrapposte per la stessa camera
-    $sql_check_overlap = "SELECT idPrenotazione
+    $sql = "SELECT idPrenotazione
                           FROM Prenotazioni
                           WHERE idCamera = ?
                           AND ((STR_TO_DATE(?, '%Y-%m-%d') BETWEEN data_inizio AND data_fine)
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           LIMIT 1";
 
     // Prepara la query per verificare sovrapposizioni
-    $stmt_check_overlap = $db->prepare($sql_check_overlap);
+    $stmt = $db->prepare($sql);
 
     // Recupera l'id della camera
     $query_camera = "SELECT idCamera FROM camere WHERE nome = ?";
@@ -34,19 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idCamera = $row_camera['idCamera'];
 
     // Associa i valori ai parametri per la query di verifica sovrapposizione
-    $stmt_check_overlap->bind_param("issssss", $idCamera, $data_checkin, $data_checkout, $data_checkin, $data_checkout, $data_checkin, $data_checkout);
+    $stmt->bind_param("issssss", $idCamera, $data_checkin, $data_checkout, $data_checkin, $data_checkout, $data_checkin, $data_checkout);
 
     // Esegui la query per verificare sovrapposizioni
-    $stmt_check_overlap->execute();
+    $stmt->execute();
 
     // Ottieni il risultato della query per verificare sovrapposizioni
-    $result_overlap = $stmt_check_overlap->get_result();
+    $result = $stmt->get_result();
 
     // Chiudi lo statement per verificare sovrapposizioni
-    $stmt_check_overlap->close();
+    $stmt->close();
 
     // Se esiste già una prenotazione sovrapposta, reindirizza alla pagina index.php con un messaggio di errore
-    if ($result_overlap->num_rows > 0) {
+    if ($result->num_rows > 0) {
         header("Location: index.php?error=La+camera+è+già+occupata+per+le+date+specificate.");
         exit();
     } else {
