@@ -18,6 +18,15 @@ require_once('config.php')
 <div class="relative flex flex-col items-center justify-center h-screen overflow-hidden">
     <h1 class="text-3xl font-semibold text-center text-gray-700 mb-4">Bed and Breakfast</h1>
     <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg">
+    <?php
+        // Verifica se è presente un messaggio di errore o di successo nell'URL
+        if (isset($_GET['error'])) {
+            echo '<div id="alertMessage" class="alert alert-error w-full">';
+            echo '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+            echo '<span>' . $_GET['error'] . '</span>';
+            echo '</div>';
+        }
+        ?>
         <h1 class="text-3xl font-semibold text-center text-gray-700">Accedi</h1>
         <form class="space-y-4" action="login_process.php" method="POST">
             <div>
@@ -43,12 +52,11 @@ require_once('config.php')
         </div>
     </div>
 </div>
-<?php
-if (isset($_GET['error']) && $_GET['error'] === "invalid_credentials") {
-    // Visualizza un alert con un messaggio di errore
-    echo "<script>alert('Email o Password sbagliati. Riprova.');</script>";
-}
-
-?>
+<script>
+    // Nasconde l'alert dopo 5 secondi
+    setTimeout(() => {
+        document.getElementById('alertMessage').style.display = 'none';
+    }, 4000);
+</script>
 </body>
 </html>

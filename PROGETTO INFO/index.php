@@ -15,6 +15,8 @@
             <a href="visualizza_prenotazioni.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
             <a href="visualizza_camere.php" class="text-white hover:text-gray-300">Visualizza Camere</a>
         </nav>
+        <!-- Pulsante per il logout -->
+        <!-- Fine del pulsante per il logout -->
     </div>
 </header>
 
@@ -83,7 +85,7 @@
                     <input type="date" name="data_checkout" class="input input-bordered w-full" required />
                 </div>
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end space-x-4">
                 <button type="submit" class="btn btn-primary">Cerca</button>
             </div>
         </form>

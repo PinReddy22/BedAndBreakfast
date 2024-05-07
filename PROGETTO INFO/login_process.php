@@ -3,9 +3,9 @@
 require_once('config.php');
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recupera i dati
-    $camera =
-
+    // Recupera l'email e la password inviate dal form di login
+    $email = $_POST['email'];
+    $password = ($_POST['password']);
 
     // Query per recuperare l'utente con l'email fornita
     $sql = "SELECT idCliente,mail,password FROM `clienti` WHERE mail=? and password=? LIMIT 1";
@@ -27,7 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         } else {
             // Credenziali non valide
-            header("Location: login.php?error=invalid_credentials");
+            header("Location: login.php?error=Email+o+Password+Errati. Reinserire+le+credenziali.");
+
             exit();
     }
     }
