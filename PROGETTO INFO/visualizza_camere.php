@@ -24,7 +24,7 @@ $idCliente = $_SESSION['idCliente'];
         <h1 class="text-3xl font-semibold text-white">Bed and Breakfast</h1>
         
         <nav class="flex space-x-4">
-            <a href="visualizza_prenotazioni.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
+            <a href="index.php" class="text-white hover:text-gray-300">Prenota Camera</a>
             <a href="visualizza_prenotazioni.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
         </nav>
     </div>
@@ -61,7 +61,7 @@ if ($result->num_rows > 0) {
         echo '<p>Prezzo: €' . $row['prezzo'] . '</p>';
         echo '<p>Capacità: ' . $row['capacita'] . ' persone</p>';
         // Aggiungi il pulsante per vedere le recensioni
-        echo '<a href="recensioni.php?idCamera=' . $row['idCamera'] . '" class="btn btn-primary">Vedi Recensioni</a>';
+        echo '<a href="visualizza_recensioni.php?idCamera=' . $row['idCamera'] . '" class="btn btn-primary">Visualizza recensioni</a>';
         echo '</div>';
         echo '</div>';
         

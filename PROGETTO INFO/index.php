@@ -1,3 +1,8 @@
+<?php
+require_once('config.php');
+session_start();
+$idCliente = $_SESSION['idCliente'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,6 +98,7 @@
 </div>
 <footer class="footer grid-rows-2 p-5 bg-neutral text-neutral-content">
     © 2024 Bed and Breakfast. Tutti i diritti riservati.
+    <?php echo $idCliente; ?>
 </footer>
 <script>
     // Nasconde l'alert dopo 5 secondi
