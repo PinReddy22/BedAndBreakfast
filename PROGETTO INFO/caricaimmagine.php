@@ -1,7 +1,7 @@
 <?php
 // Connessione al database
 require_once('config.php');
-
+    
 // Percorso dell'immagine da caricare
 $imagePath = 'C:\Users\fahri\OneDrive\Desktop\img_2455.jpg';
 

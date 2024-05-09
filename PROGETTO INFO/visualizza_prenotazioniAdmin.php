@@ -54,7 +54,7 @@ require_once('config.php');
                         Nome Camera
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Recensione
+                        Nome Cliente
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Elimina
@@ -64,12 +64,11 @@ require_once('config.php');
                 <tbody class="bg-white divide-y divide-gray-200">
                     <?php
                     // Esegui la query per recuperare le prenotazioni del cliente
-                    $sql = "SELECT idPrenotazione, data_inizio, data_fine, conferma_pagamento, Camere.nome
+                    $sql = "SELECT Prenotazioni.idPrenotazione, Prenotazioni.data_inizio, Prenotazioni.data_fine, Prenotazioni.conferma_pagamento, Camere.nome AS nome_camera, Clienti.nome AS nome_cliente, Clienti.cognome as cognome_cliente
                     FROM Prenotazioni
                     JOIN Camere ON Prenotazioni.idCamera = Camere.idCamera
-                    WHERE idCliente = ?";
+                    JOIN Clienti ON Prenotazioni.idCliente = Clienti.idCliente";
                     $stmt = $db->prepare($sql);
-                    $stmt->bind_param("i", $idCliente);
                     $stmt->execute();
                     $result = $stmt->get_result();
                     // Itera attraverso le prenotazioni e visualizzale
@@ -79,11 +78,8 @@ require_once('config.php');
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['data_inizio'] . "</td>";
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['data_fine'] . "</td>";
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . ($row['conferma_pagamento'] ? 'Pagato' : 'Non Pagato') . "</td>";
-                        echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['nome'] . "</td>";
-                        // Bottone per aprire il modale
-                        echo '<td class="px-6 py-4 whitespace-nowrap">';
-                        echo '<button class="text-blue-500 hover:underline" onclick="openReviewModal(' . $row['idPrenotazione'] . ')">Recensione</button>';
-                        echo '</td>';
+                        echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['nome_camera'] . "</td>";
+                        echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['nome_cliente'] . ' ' . $row['cognome_cliente'] . "</td>";
                         // Apri il form per eliminare la prenotazione
                         echo '<td class="px-6 py-4 whitespace-nowrap">';
                         echo '<form action="elimina_prenotazione.php" method="POST">';
@@ -100,49 +96,9 @@ require_once('config.php');
     </div>
 </div>
 
-<!-- Modale per la recensione -->
-<dialog id="reviewModal" class="modal">
-    <div class="modal-box p-6 bg-white rounded-md shadow-lg">
-        <h3 class="font-bold text-lg mb-4">Lascia una Recensione</h3>
-        <form id="reviewForm" method="POST" action="invia_recensione.php">
-            <input type="hidden" id="prenotazioneId" name="idPrenotazione">
-            <div class="mb-4">
-                <label for="voto" class="block mb-1">Voto:</label>
-                <input type="number" id="voto" name="voto" min="1" max="5" required class="border rounded-md px-3 py-2 w-full" />
-            </div>
-            <div class="mb-4">
-                <label for="commento" class="block mb-1">Commento:</label>
-                <textarea id="commento" name="commento" required class="border rounded-md px-3 py-2 w-full"></textarea>
-            </div>
-            <div class="flex justify-end">
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Invia Recensione</button>
-            </div>
-        </form>
-        <div class="flex justify-end">
-        <button onclick="closeReviewModal()" class="mt-4 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">Chiudi</button>
-        </div>
-    </div>
-</dialog>
-
-
-<script>
-    // Funzione per aprire il modale della recensione
-    function openReviewModal(idPrenotazione) {
-        document.getElementById('prenotazioneId').value = idPrenotazione;
-        var reviewModal = document.getElementById('reviewModal');
-        reviewModal.showModal();
-    }
-
-    // Funzione per chiudere il modale della recensione
-    function closeReviewModal() {
-        var reviewModal = document.getElementById('reviewModal');
-        reviewModal.close();
-    }
-</script>
-
 <footer class="footer grid-rows-2 p-5 bg-neutral text-neutral-content">
     © 2024 Bed and Breakfast. Tutti i diritti riservati.
-    <a href="logout.php" class="text-white hover:text-gray-300 underline" >LogOut</button>
+    <a href="logout.php" class="text-white hover:text-gray-300 underline" >LogOut</a>
 
 </footer>
 </body>

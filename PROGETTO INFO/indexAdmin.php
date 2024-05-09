@@ -1,7 +1,6 @@
 <?php
 require_once('config.php');
 session_start();
-$idCliente = $_SESSION['idCliente'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,11 +16,10 @@ $idCliente = $_SESSION['idCliente'];
     <div class="flex flex-col items-center justify-center space-y-4">
         <h1 class="text-3xl font-semibold text-white">Bed and Breakfast</h1>
         <nav class="flex space-x-4">
-            <a href="visualizza_prenotazioni.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
-            <a href="visualizza_camere.php" class="text-white hover:text-gray-300">Visualizza Camere</a>
+            <a href="visualizza_prenotazioniAdmin.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
+            <a href="visualizza_camereAdmin.php" class="text-white hover:text-gray-300">Visualizza Camere</a>
         </nav>
-        <!-- Pulsante per il logout -->
-        <!-- Fine del pulsante per il logout -->
+
     </div>
 </header>
 
@@ -47,6 +45,33 @@ $idCliente = $_SESSION['idCliente'];
         <h1 class="text-3xl font-semibold text-center text-gray-700">Prenota una camera</h1>
         <form class="space-y-4" action="prenotazione_process.php" method="POST">
             <div class="flex space-x-4">
+                <div class="w-1/2">
+                    <label class="label">
+                        <span class="text-base label-text">Cliente</span>
+                    </label>
+                    <select name="cliente" class="input input-bordered w-full" required>
+                        <option value="" disabled selected>Seleziona un cliente</option>
+                        <?php
+                        // Query per selezionare i nomi dei clienti
+                        $sql = "SELECT idCliente, nome, cognome FROM Clienti WHERE admin = 0";
+
+                        // Esegui la query
+                        $stmt = $db->prepare($sql);
+                        $stmt->execute();
+
+                        // Associa il risultato della query
+                        $stmt->bind_result($idCliente, $nomeCliente, $cognomeCliente);
+
+                        // Genera le opzioni per il menu a discesa
+                        while ($stmt->fetch()) {
+                            echo '<option value="' . $idCliente . '">' . $nomeCliente . ' ' . $cognomeCliente . '</option>';
+                        }
+
+                        // Chiudi lo statement e la connessione al database
+                        $stmt->close();
+                        ?>
+                    </select>
+                </div>
                 <div class="w-1/2">
                     <label class="label">
                         <span class="text-base label-text">Camera</span>
@@ -77,6 +102,8 @@ $idCliente = $_SESSION['idCliente'];
                         ?>
                     </select>
                 </div>
+            </div>
+            <div class="flex space-x-4">
                 <div class="w-1/4">
                     <label class="label">
                         <span class="text-base label-text">Check-in</span>
@@ -91,15 +118,15 @@ $idCliente = $_SESSION['idCliente'];
                 </div>
             </div>
             <div class="flex justify-end space-x-4">
-                <button type="submit" class="btn btn-primary">Prenota</button>
+                <button type="submit" class="btn btn-primary">prenota</button>
             </div>
         </form>
     </div>
 </div>
 <footer class="footer grid-rows-2 p-5 bg-neutral text-neutral-content">
     © 2024 Bed and Breakfast. Tutti i diritti riservati.
-    <a href="logout.php" class="text-white hover:text-gray-300 underline" >LogOut</a>
-    <?php echo $idCliente; ?>
+    <a href="logout.php" class="text-white hover:text-gray-300 underline">LogOut</a>
+
 </footer>
 <script>
     // Nasconde l'alert dopo 5 secondi

@@ -1,7 +1,5 @@
 <?php
 require_once('config.php');
-session_start();
-$idCliente = $_SESSION['idCliente'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +12,7 @@ $idCliente = $_SESSION['idCliente'];
     <style>
     .card.card-compact {
         width: 400px; 
-        height: 400px;
+        height: 500px;
     }
 </style>
 </head>
@@ -24,11 +22,46 @@ $idCliente = $_SESSION['idCliente'];
         <h1 class="text-3xl font-semibold text-white">Bed and Breakfast</h1>
         
         <nav class="flex space-x-4">
-            <a href="index.php" class="text-white hover:text-gray-300">Prenota Camera</a>
-            <a href="visualizza_prenotazioni.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
+            <a href="indexAdmin.php" class="text-white hover:text-gray-300">Prenota Camera</a>
+            <a href="visualizza_prenotazioniAdmin.php" class="text-white hover:text-gray-300">Visualizza Prenotazioni</a>
         </nav>
     </div>
 </header>
+<!-- Modal per aggiungere una nuova camera -->
+<dialog id="addRoomModal" class="modal">
+  <div class="modal-box w-11/12 max-w-5xl">
+    <h3 class="font-bold text-lg">Aggiungi una Nuova Camera</h3>
+    <form action="aggiungi_camera.php" method="POST" class="py-4">
+      <div class="form-control">
+        <label for="nome" class="block text-sm font-medium text-gray-700">Nome Camera:</label>
+        <input type="text" id="nome" name="nome" required class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100">
+      </div>
+      <div class="form-control">
+        <label for="descrizione" class="block text-sm font-medium text-gray-700">Descrizione:</label>
+        <textarea id="descrizione" name="descrizione" required class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100"></textarea>
+      </div>
+      <div class="form-control">
+        <label for="prezzo" class="block text-sm font-medium text-gray-700">Prezzo (€):</label>
+        <input type="number" id="prezzo" name="prezzo" step="0.01" min="0" required class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100">
+      </div>
+      <div class="form-control">
+        <label for="capacita" class="block text-sm font-medium text-gray-700">Capacità:</label>
+        <input type="number" id="capacita" name="capacita" min="1" required class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-100">
+      </div>
+      <div class="modal-action mt-4">
+        <button type="submit" class="btn btn-primary">Aggiungi Camera</button>
+        <button class="btn" onclick="closeAddRoomModal()">Annulla</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+
+<!-- Aggiungi un pulsante per aprire il modale -->
+<div class="flex items-center justify-center">
+    <p class="text-center text-blue-500 cursor-pointer font-semibold hover:underline" onclick="openAddRoomModal()">Aggiungi Camera</p>
+</div>
+    
 
 <div class="relative flex flex-col items-center justify-center p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top card-container">
 
@@ -62,8 +95,15 @@ if ($result->num_rows > 0) {
         echo '<p>Capacità: ' . $row['capacita'] . ' persone</p>';
         // Aggiungi il pulsante per vedere le recensioni
         echo '<a href="visualizza_recensioni.php?idCamera=' . $row['idCamera'] . '" class="btn btn-primary">Visualizza recensioni</a>';
+        // Modifica il pulsante Elimina
+        echo '<form action="elimina_camera.php" method="POST" class="mt-4">';
+        echo '<input type="hidden" name="idCamera" value="' . $row['idCamera'] . '">';
+        echo '<button type="submit" class="btn btn-danger w-full">Elimina</button>';
+        echo '</form>';
         echo '</div>';
         echo '</div>';
+        
+        
         
         $count++; // Incrementa il contatore
         
@@ -87,5 +127,18 @@ if ($result->num_rows > 0) {
     <a href="logout.php" class="text-white hover:text-gray-300 underline" >LogOut</button>
 
 </footer>
+<script>
+  // Funzione per aprire il modale per aggiungere una nuova camera
+  function openAddRoomModal() {
+    var addRoomModal = document.getElementById('addRoomModal');
+    addRoomModal.showModal();
+  }
+
+  // Funzione per chiudere il modale per aggiungere una nuova camera
+  function closeAddRoomModal() {
+    var addRoomModal = document.getElementById('addRoomModal');
+    addRoomModal.close();
+  }
+</script>
 </body>
 </html>

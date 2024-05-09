@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql="INSERT INTO clienti (nome, cognome, mail, password) VALUES (?, ?, ?, ?)" ;
     $insert = $db->prepare($sql);
     $risultato=$insert->execute([$nome,$cognome,$email,$password]);
-
+    
 }
 ?>
 
