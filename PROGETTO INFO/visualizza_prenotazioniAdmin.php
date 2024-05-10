@@ -10,11 +10,10 @@ require_once('config.php');
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Stile per la tabella */
         .table-container {
-            max-height: 400px; /* Altezza massima */
-            overflow-y: auto; /* Scroll verticale */
-            overflow-x: hidden; /* Nasconde lo scroll orizzontale */
+            max-height: 400px;
+            overflow-y: auto; 
+            overflow-x: hidden; 
         }
     </style>
 </head>
@@ -33,7 +32,6 @@ require_once('config.php');
     <h1 class="absolute top-0 text-3xl font-semibold text-center text-gray-700 w-full">Le tue prenotazioni</h1>
     <div class="relative flex flex-col items-center justify-center p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top">
 
-        <!-- Aggiunta della classe table-container per lo scrolling -->
         <div class="table-container">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -63,7 +61,6 @@ require_once('config.php');
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     <?php
-                    // Esegui la query per recuperare le prenotazioni del cliente
                     $sql = "SELECT Prenotazioni.idPrenotazione, Prenotazioni.data_inizio, Prenotazioni.data_fine, Prenotazioni.conferma_pagamento, Camere.nome AS nome_camera, Clienti.nome AS nome_cliente, Clienti.cognome as cognome_cliente
                     FROM Prenotazioni
                     JOIN Camere ON Prenotazioni.idCamera = Camere.idCamera
@@ -71,7 +68,6 @@ require_once('config.php');
                     $stmt = $db->prepare($sql);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    // Itera attraverso le prenotazioni e visualizzale
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['idPrenotazione'] . "</td>";
@@ -80,7 +76,6 @@ require_once('config.php');
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . ($row['conferma_pagamento'] ? 'Pagato' : 'Non Pagato') . "</td>";
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['nome_camera'] . "</td>";
                         echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row['nome_cliente'] . ' ' . $row['cognome_cliente'] . "</td>";
-                        // Apri il form per eliminare la prenotazione
                         echo '<td class="px-6 py-4 whitespace-nowrap">';
                         echo '<form action="elimina_prenotazione.php" method="POST">';
                         echo '<input type="hidden" name="idPrenotazione" value="' . $row['idPrenotazione'] . '">';

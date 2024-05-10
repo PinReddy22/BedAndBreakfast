@@ -3,15 +3,12 @@ require_once('config.php');
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recupera i dati inviati dal form
     $camera = $_POST['camera'];
     $data_checkin = $_POST['data_checkin'];
     $data_checkout = $_POST['data_checkout'];
 
-    // Recupera l'idCliente dalla sessione
     $idCliente = $_SESSION['idCliente'];
 
-    // Query per verificare se ci sono prenotazioni sovrapposte per la stessa camera
     $sql = "SELECT idPrenotazione
                           FROM Prenotazioni
                           WHERE idCamera = ?
@@ -21,10 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           OR (data_fine BETWEEN STR_TO_DATE(?, '%Y-%m-%d') AND STR_TO_DATE(?, '%Y-%m-%d')))
                           LIMIT 1";
 
-    // Prepara la query per verificare sovrapposizioni
     $stmt = $db->prepare($sql);
 
-    // Recupera l'id della camera
     $query_camera = "SELECT idCamera FROM camere WHERE nome = ?";
     $stmt_camera = $db->prepare($query_camera);
     $stmt_camera->bind_param("s", $camera);
@@ -33,26 +28,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $row_camera = $result_camera->fetch_assoc();
     $idCamera = $row_camera['idCamera'];
 
-    // Associa i valori ai parametri per la query di verifica sovrapposizione
     $stmt->bind_param("issssss", $idCamera, $data_checkin, $data_checkout, $data_checkin, $data_checkout, $data_checkin, $data_checkout);
 
-    // Esegui la query per verificare sovrapposizioni
     $stmt->execute();
 
-    // Ottieni il risultato della query per verificare sovrapposizioni
     $result = $stmt->get_result();
 
-    // Chiudi lo statement per verificare sovrapposizioni
     $stmt->close();
 
-    // Se esiste già una prenotazione sovrapposta, reindirizza alla pagina index.php con un messaggio di errore
     if ($result->num_rows > 0) {
         header("Location: index.php?error=La+camera+è+già+occupata+per+le+date+specificate.");
         exit();
     } else {
-        // Altrimenti, aggiungi la nuova prenotazione al database
 
-        // Query per inserire la nuova prenotazione nel database
         $sql_insert = "INSERT INTO Prenotazioni (data_inizio, data_fine, conferma_pagamento, idCliente, idCamera) 
                        VALUES (?, ?, ?, ?, ?)";
         $stmt_insert = $db->prepare($sql_insert);
@@ -60,10 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_insert->bind_param("ssiii", $data_checkin, $data_checkout, $conferma_pagamento, $idCliente, $idCamera);
         $stmt_insert->execute();
 
-        // Chiudi lo statement per l'inserimento della prenotazione
         $stmt_insert->close();
 
-        // Reindirizza alla pagina index.php con un messaggio di successo
         header("Location: index.php?success=Prenotazione+aggiunta+con+successo!");
         exit();
     }

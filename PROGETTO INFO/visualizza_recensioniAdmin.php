@@ -1,6 +1,7 @@
 <?php
 require_once('config.php');
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,10 +57,6 @@ require_once('config.php');
     <div class="review-container">
         <div class="review-grid">
             <?php
-            require_once('config.php');
-            session_start();
-            $idCliente = $_SESSION['idCliente'];
-
             if(isset($_GET['idCamera'])) {
                 $idCamera = $_GET['idCamera'];
 
@@ -79,6 +76,11 @@ require_once('config.php');
                         echo "<p>Cliente: {$row['nomeCliente']}</p>";
                         echo "<p>Voto: {$row['voto']}</p>";
                         echo "<p>Recensione: {$row['testo']}</p>";
+                        echo '<form action="elimina_recensione.php" method="POST" class="mt-4">';
+                        echo '<input type="hidden" name="idRecensione" value="' . $row['idRecensione'] . '">';
+                        echo '<input type="hidden" name="idCamera" value="' . $idCamera . '">';
+                        echo '<button type="submit" class="btn btn-danger w-full">Elimina</button>';
+                        echo '</form>';
                         echo "</div>";
                     }
                 } else {
@@ -86,7 +88,6 @@ require_once('config.php');
                 }
 
                 $stmt->close();
-                $db->close();
             } else {
                 echo "ID della camera non fornito.";
             }
@@ -101,4 +102,3 @@ require_once('config.php');
 </footer>
 </body>
 </html>
-

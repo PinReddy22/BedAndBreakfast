@@ -26,9 +26,7 @@ session_start();
 <div class="flex-grow relative flex flex-col items-center justify-center overflow-hidden">
     <h1 class="absolute top-0 text-3xl font-semibold text-center text-gray-700 w-full">Prenota la tua Camera</h1>
     <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg">
-        <!-- Aggiunta della sezione per visualizzare l'esito della prenotazione -->
         <?php
-        // Verifica se è presente un messaggio di errore o di successo nell'URL
         if (isset($_GET['error'])) {
             echo '<div id="alertMessage" class="alert alert-error w-full">';
             echo '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
@@ -41,7 +39,6 @@ session_start();
             echo '</div>';
         }
         ?>
-        <!-- Fine della sezione per visualizzare l'esito della prenotazione -->
         <h1 class="text-3xl font-semibold text-center text-gray-700">Prenota una camera</h1>
         <form class="space-y-4" action="prenotazione_process.php" method="POST">
             <div class="flex space-x-4">
@@ -52,22 +49,17 @@ session_start();
                     <select name="cliente" class="input input-bordered w-full" required>
                         <option value="" disabled selected>Seleziona un cliente</option>
                         <?php
-                        // Query per selezionare i nomi dei clienti
                         $sql = "SELECT idCliente, nome, cognome FROM Clienti WHERE admin = 0";
 
-                        // Esegui la query
                         $stmt = $db->prepare($sql);
                         $stmt->execute();
 
-                        // Associa il risultato della query
                         $stmt->bind_result($idCliente, $nomeCliente, $cognomeCliente);
 
-                        // Genera le opzioni per il menu a discesa
                         while ($stmt->fetch()) {
                             echo '<option value="' . $idCliente . '">' . $nomeCliente . ' ' . $cognomeCliente . '</option>';
                         }
 
-                        // Chiudi lo statement e la connessione al database
                         $stmt->close();
                         ?>
                     </select>
@@ -81,22 +73,17 @@ session_start();
                         <?php
                         require_once('config.php');
 
-                        // Query per selezionare i nomi delle camere
                         $sql = "SELECT nome FROM Camere";
 
-                        // Esegui la query
                         $stmt = $db->prepare($sql);
                         $stmt->execute();
 
-                        // Associa il risultato della query
                         $stmt->bind_result($nomeCamera);
 
-                        // Genera le opzioni per il menu a discesa
                         while ($stmt->fetch()) {
                             echo '<option value="' . $nomeCamera . '">' . $nomeCamera . '</option>';
                         }
 
-                        // Chiudi lo statement e la connessione al database
                         $stmt->close();
                         $db->close();
                         ?>
@@ -129,7 +116,6 @@ session_start();
 
 </footer>
 <script>
-    // Nasconde l'alert dopo 5 secondi
     setTimeout(() => {
         document.getElementById('alertMessage').style.display = 'none';
     }, 4000);

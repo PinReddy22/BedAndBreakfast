@@ -3,11 +3,9 @@
 require_once('config.php');
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recupera l'email e la password inviate dal form di login
     $email = $_POST['email'];
     $password = ($_POST['password']);
 
-    // Query per recuperare l'utente con l'email fornita
     $sql = "SELECT idCliente,mail,password,admin FROM `clienti` WHERE mail=? and password=? LIMIT 1";
     $insert = $db->prepare($sql);
     $insert->bind_param("ss",$email,$password);
@@ -18,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if($utente[0]['admin']==1){
             header("location: indexAdmin.php");
         }else{
-        print_r($utente); // Stampare eventuali risultati della query per debug
+        print_r($utente); 
         $id = $utente[0]['idCliente'];
             session_start();
             $_SESSION['idCliente'] = $id;
@@ -26,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         } else {
-            // Credenziali non valide
             header("Location: login.php?error=Email+o+Password+Errati. Reinserire+le+credenziali.");
 
             exit();

@@ -38,21 +38,16 @@ $idCliente = $_SESSION['idCliente'];
         
         <?php
 
-// Query per selezionare tutte le camere
 $sql = "SELECT * FROM Camere";
 $result = $db->query($sql);
 
-// Inizia la visualizzazione delle camere
 if ($result->num_rows > 0) {
-    // Loop attraverso ogni riga risultante
-    $count = 0; // Contatore per verificare ogni 3 camere
+    $count = 0;
     while ($row = $result->fetch_assoc()) {
-        // Se è il primo elemento o un multiplo di 3, apri un nuovo div di riga
         if ($count == 0 || $count % 3 == 0) {
             echo '<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">';
         }
         
-        // Visualizza la camera
         echo '<div class="card card-compact bg-base-100 shadow-xl">';
         echo '<div class="card-body">';
         echo '<img src="https://www.blunottefirenze.com/Filtrate/img_2455.jpg" alt="Immagine Camera" class="h-40 w-full object-cover">';
@@ -60,16 +55,14 @@ if ($result->num_rows > 0) {
         echo '<p>' . $row['descrizione'] . '</p>';
         echo '<p>Prezzo: €' . $row['prezzo'] . '</p>';
         echo '<p>Capacità: ' . $row['capacita'] . ' persone</p>';
-        // Aggiungi il pulsante per vedere le recensioni
         echo '<a href="visualizza_recensioni.php?idCamera=' . $row['idCamera'] . '" class="btn btn-primary">Visualizza recensioni</a>';
         echo '</div>';
         echo '</div>';
         
-        $count++; // Incrementa il contatore
+        $count++; 
         
-        // Se è l'ultimo elemento della riga o l'ultimo elemento, chiudi il div di riga
         if ($count % 3 == 0 || $count == $result->num_rows) {
-            echo '</div>'; // Chiudi il div di riga
+            echo '</div>'; 
             echo '<br>';
         }
     }
